@@ -157,9 +157,62 @@ st.markdown(
         padding:.62rem 1rem; font-weight:750; transition:all .18s ease; min-height:43px;
     }}
     .stButton > button:hover, .stDownloadButton > button:hover {{ background:#075ec2; color:white; border-color:#075ec2; transform:translateY(-1px); box-shadow:0 6px 16px #087cf02c; }}
-    div[data-testid="stForm"] {{ background:#fff; border:1px solid #e5edf6; border-radius:20px; padding:1.1rem 1.2rem; }}
-    div[data-testid="stTextInput"] input, div[data-testid="stNumberInput"] input, div[data-testid="stDateInput"] input, div[data-testid="stSelectbox"] div[data-baseweb="select"] {{ border-radius:11px; }}
-    .stTextInput label, .stNumberInput label, .stDateInput label, .stSelectbox label, .stMultiSelect label, .stTextArea label {{ color:#42576e; font-weight:650; }}
+    div[data-testid="stForm"] {{ background:#fff !important; border:1px solid #e5edf6; border-radius:20px; padding:1.1rem 1.2rem; }}
+
+    /* High-contrast form controls. Explicit colors prevent dark-theme settings
+       from making itinerary text black on a dark input background. */
+    div[data-testid="stTextInput"] input,
+    div[data-testid="stNumberInput"] input,
+    div[data-testid="stDateInput"] input,
+    div[data-testid="stTextArea"] textarea,
+    textarea,
+    input {{
+        background:#ffffff !important;
+        color:#122d4b !important;
+        -webkit-text-fill-color:#122d4b !important;
+        border-color:#cbd8e7 !important;
+        border-radius:11px !important;
+        caret-color:#087cf0 !important;
+    }}
+    div[data-testid="stTextArea"] textarea {{
+        min-height:180px;
+        line-height:1.65 !important;
+        font-size:0.96rem !important;
+        padding:0.85rem !important;
+    }}
+    div[data-testid="stSelectbox"] div[data-baseweb="select"],
+    div[data-testid="stMultiSelect"] div[data-baseweb="select"] {{
+        background:#ffffff !important; color:#122d4b !important;
+        border-radius:11px !important;
+    }}
+    .stTextInput label, .stNumberInput label, .stDateInput label,
+    .stSelectbox label, .stMultiSelect label, .stTextArea label {{
+        color:#344d67 !important; font-weight:700 !important;
+    }}
+
+    /* Keep itinerary day accordions readable on both light and dark themes. */
+    div[data-testid="stExpander"] {{
+        background:#ffffff !important;
+        border:1px solid #dfe8f2 !important;
+        border-radius:16px !important;
+        overflow:hidden;
+    }}
+    div[data-testid="stExpander"] details,
+    div[data-testid="stExpander"] summary,
+    div[data-testid="stExpander"] [data-testid="stExpanderDetails"] {{
+        background:#ffffff !important;
+        color:#122d4b !important;
+    }}
+    div[data-testid="stExpander"] summary p,
+    div[data-testid="stExpander"] [data-testid="stExpanderDetails"] p,
+    div[data-testid="stExpander"] [data-testid="stExpanderDetails"] label,
+    div[data-testid="stExpander"] [data-testid="stExpanderDetails"] span {{
+        color:#122d4b;
+    }}
+    div[data-testid="stExpander"] [data-testid="stExpanderDetails"] {{
+        padding:0.75rem 0.9rem 1rem;
+    }}
+    .stCaption, [data-testid="stCaptionContainer"] {{ color:#63778d !important; }}
     div[data-testid="stMetric"] {{ background:#fff; border:1px solid #e5edf6; border-radius:16px; padding:1rem; box-shadow:0 4px 15px #16385b05; }}
     div[data-testid="stMetricLabel"] {{ color:#6b7d90; }}
     div[data-testid="stMetricValue"] {{ color:#122d4b; font-weight:800; }}
