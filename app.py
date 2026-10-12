@@ -74,20 +74,48 @@ st.markdown(
     .brand-tag {{ color:#7b8ca0; font-size:.78rem; margin-top:-7px; margin-left:52px; }}
     .top-note {{ color:#6c7e92; font-size:.82rem; text-align:right; }}
 
-    div[data-testid="stRadio"] > label {{ display:none; }}
-    div[data-testid="stRadio"] div[role="radiogroup"] {{
-        display:flex; flex-wrap:wrap; gap:.35rem; align-items:center;
-        border:1px solid #e5edf6; border-radius:18px; background:#ffffffd9;
-        padding:.42rem; box-shadow:0 5px 20px #16385b08;
+    /* Icon-first navigation. Each label below is a real Streamlit button. */
+    .st-key-navigation_bar [data-testid="stHorizontalBlock"] {{
+        display:flex !important; flex-direction:row !important; flex-wrap:wrap !important;
+        gap:.55rem !important; align-items:stretch !important;
     }}
-    div[data-testid="stRadio"] div[role="radiogroup"] > label {{
-        margin:0 !important; border-radius:12px; padding:.48rem .85rem;
-        color:#52657a; font-size:.88rem; font-weight:650;
-        transition:background .18s ease, color .18s ease, transform .18s ease;
+    .st-key-navigation_bar [data-testid="column"] {{
+        flex:1 1 calc(20% - .55rem) !important; width:calc(20% - .55rem) !important;
+        max-width:none !important; min-width:0 !important; padding:0 !important;
     }}
-    div[data-testid="stRadio"] div[role="radiogroup"] > label:hover {{ background:#eef7ff; transform:translateY(-1px); }}
-    div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) {{ background:#e8f3ff; color:#087cf0; }}
-    div[data-testid="stRadio"] div[role="radiogroup"] > label > div:first-child {{ display:none; }}
+    .nav-icon {{
+        width:62px; height:62px; margin:0 auto .38rem; display:flex;
+        align-items:center; justify-content:center; border-radius:19px;
+        background:linear-gradient(145deg,#eaf5ff,#f2fbff); border:1px solid #dcecff;
+        box-shadow:0 7px 18px #0b65b510; font-size:2.05rem;
+        transition:transform .22s ease, box-shadow .22s ease, background .22s ease;
+        animation:iconFloat 3.8s ease-in-out infinite;
+    }}
+    .nav-icon.active {{
+        background:linear-gradient(145deg,#d8ecff,#dffbf5); border-color:#b6dafb;
+        box-shadow:0 8px 22px #087cf026;
+    }}
+    .st-key-navigation_bar [data-testid="stButton"] {{ width:100%; }}
+    .st-key-navigation_bar [data-testid="stButton"] button {{
+        width:100%; min-height:47px; padding:.52rem .35rem !important;
+        white-space:normal !important; text-align:center !important;
+        border-radius:12px !important; font-size:.88rem !important;
+        font-weight:750 !important; line-height:1.25 !important;
+        transition:transform .2s ease, box-shadow .2s ease, background .2s ease !important;
+    }}
+    .st-key-navigation_bar [data-testid="stButton"] button:hover {{
+        transform:translateY(-2px); box-shadow:0 8px 18px #087cf020;
+    }}
+    .st-key-navigation_bar [data-testid="stButton"] button[kind="primary"] {{
+        background:linear-gradient(135deg,#087cf0,#0c9be7) !important;
+        border-color:#087cf0 !important; color:white !important;
+    }}
+    .st-key-navigation_bar [data-testid="stButton"] button[kind="secondary"] {{
+        background:#ffffff !important; border-color:#e2eaf4 !important; color:#344d67 !important;
+    }}
+    .st-key-navigation_bar [data-testid="stButton"] button:focus-visible {{
+        outline:3px solid #7fc6ff !important; outline-offset:2px !important;
+    }}
 
     .hero {{
         position:relative; overflow:hidden; min-height:265px; display:flex; align-items:center;
@@ -115,7 +143,8 @@ st.markdown(
     .pill {{ display:inline-block; border-radius:999px; padding:.28rem .6rem; background:#e6faf3; color:#09876f; font-size:.72rem; font-weight:750; }}
     .notice {{ background:#edf8ff; border:1px solid #d9ecfb; border-radius:15px; padding:.9rem 1rem; color:#41627f; font-size:.86rem; }}
     .destination-card {{ overflow:hidden; background:white; border:1px solid var(--st-border); border-radius:18px; box-shadow:0 6px 20px #1b436b09; }}
-    .destination-card img {{ width:100%; height:145px; object-fit:cover; display:block; }}
+    .destination-card img {{ width:100%; height:145px; object-fit:cover; display:block; transition:transform .45s ease, filter .45s ease; }}
+    .destination-card:hover img {{ transform:scale(1.045); filter:saturate(1.08); }}
     .destination-copy {{ padding:.85rem .95rem 1rem; }}
     .destination-copy strong {{ color:#122d4b; font-size:1rem; }}
     .destination-copy p {{ color:#718399; font-size:.82rem; margin:.25rem 0 0; }}
@@ -135,7 +164,10 @@ st.markdown(
     div[data-testid="stMetricLabel"] {{ color:#6b7d90; }}
     div[data-testid="stMetricValue"] {{ color:#122d4b; font-weight:800; }}
     hr {{ border-color:#e6edf5; }}
-    @keyframes fadeUp {{ from {{ opacity:0; transform:translateY(9px); }} to {{ opacity:1; transform:translateY(0); }} }}
+    @keyframes fadeUp {{ from {{ opacity:0; transform:translateY(12px); }} to {{ opacity:1; transform:translateY(0); }} }}
+    @keyframes screenSlideIn {{ from {{ opacity:0; transform:translateX(28px); }} to {{ opacity:1; transform:translateX(0); }} }}
+    @keyframes iconFloat {{ 0%,100% {{ transform:translateY(0); }} 50% {{ transform:translateY(-3px); }} }}
+    @keyframes softGlow {{ 0%,100% {{ box-shadow:0 7px 18px #0b65b510; }} 50% {{ box-shadow:0 10px 24px #087cf022; }} }}
 
     @media (max-width: 760px) {{
         .block-container {{ padding:.5rem .8rem 2rem; }}
@@ -143,8 +175,15 @@ st.markdown(
         .brand-tag {{ margin-left:46px; }} .top-note {{ display:none; }}
         .hero {{ min-height:275px; padding:1.45rem 1.2rem; border-radius:19px; background-position:62% center; }}
         .hero h1 {{ font-size:2.05rem !important; }} .hero p {{ font-size:.92rem; }}
-        div[data-testid="stRadio"] div[role="radiogroup"] {{ gap:.18rem; padding:.3rem; border-radius:14px; }}
-        div[data-testid="stRadio"] div[role="radiogroup"] > label {{ padding:.45rem .55rem; font-size:.77rem; }}
+        .st-key-navigation_bar [data-testid="stHorizontalBlock"] {{
+            flex-direction:row !important; flex-wrap:wrap !important; gap:.45rem !important;
+        }}
+        .st-key-navigation_bar [data-testid="column"] {{
+            flex:1 1 calc(33.333% - .45rem) !important; width:calc(33.333% - .45rem) !important;
+            max-width:none !important; min-width:0 !important;
+        }}
+        .nav-icon {{ width:54px; height:54px; border-radius:17px; font-size:1.85rem; }}
+        .st-key-navigation_bar [data-testid="stButton"] button {{ min-height:43px; font-size:.81rem !important; }}
         .soft-card {{ padding:.9rem; }} .big-value {{ font-size:1.35rem; }}
         .destination-card img {{ height:125px; }}
     }}
@@ -156,7 +195,9 @@ st.markdown(
 
 # -------------------- Helpers --------------------
 def go_to_page(page):
-    """Callback: change the selected top navigation before rerun."""
+    """Change page and animate only when navigation actually changes."""
+    if st.session_state.get("navigation") != page:
+        st.session_state.nav_transition = True
     st.session_state.navigation = page
 
 
@@ -306,14 +347,40 @@ with head_left:
 with head_right:
     st.markdown('<div class="top-note">Your next great story is one trip away. 🌍</div>', unsafe_allow_html=True)
 
-selected_page = st.radio(
-    "Main navigation",
-    PAGES,
-    horizontal=True,
-    label_visibility="collapsed",
-    key="navigation",
-)
-st.markdown("<hr style='margin:.6rem 0 1.1rem;border-color:#e6edf5'>", unsafe_allow_html=True)
+# Five icon tiles with clickable text buttons underneath. On small screens,
+# CSS wraps them into a 3 + 2 grid so labels remain readable.
+if st.session_state.navigation not in PAGES:
+    st.session_state.navigation = PAGES[0]
+with st.container(key="navigation_bar"):
+    nav_columns = st.columns(5, gap="small")
+    for idx, page in enumerate(PAGES):
+        icon, label = page.split(" ", 1)
+        active = st.session_state.navigation == page
+        with nav_columns[idx]:
+            icon_class = "nav-icon active" if active else "nav-icon"
+            st.markdown(f'<div class="{icon_class}">{icon}</div>', unsafe_allow_html=True)
+            st.button(
+                label,
+                key=f"nav_{idx}",
+                type="primary" if active else "secondary",
+                use_container_width=True,
+                on_click=go_to_page,
+                args=(page,),
+            )
+
+selected_page = st.session_state.navigation
+animate_transition = st.session_state.pop("nav_transition", False)
+if animate_transition:
+    st.markdown(
+        """<style>
+        @keyframes smartTripSlideIn { from { opacity:0; transform:translateX(30px); } to { opacity:1; transform:translateX(0); } }
+        .main .block-container { animation:smartTripSlideIn .42s cubic-bezier(.2,.7,.2,1) both; }
+        .hero { animation:fadeUp .52s ease both; }
+        .soft-card, .destination-card, .step-card { animation:fadeUp .48s ease both; }
+        </style>""",
+        unsafe_allow_html=True,
+    )
+st.markdown("<hr style='margin:.8rem 0 1.1rem;border-color:#e6edf5'>", unsafe_allow_html=True)
 
 trip = st.session_state.trip
 
